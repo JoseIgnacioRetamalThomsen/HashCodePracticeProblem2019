@@ -15,6 +15,7 @@ public class Runner {
 		Input file1 = reader.readFile(new File("in/a_example.in"));
 		file1.printPizza();
 		PizzaCutter pc = new PizzaCutter();
+		//COMMENT
 		List<Slice> l1 = pc.cut1(file1);
 		
 
