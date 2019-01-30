@@ -23,6 +23,7 @@ public class ReadInput {
 			// read max size
 			input.setMaxSize(sc.nextInt());
 			sc.nextLine();
+			//array representing pizza
 			int pizza[][] = new int[rows][col];
 
 			for (int i = 0; i < rows; i++) {
