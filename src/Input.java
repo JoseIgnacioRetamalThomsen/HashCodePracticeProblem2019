@@ -50,7 +50,7 @@ public class Input {
 		    System.out.println();
 		}
 	}
-	public int getWidthOfPizza()
+	public int getHeightOfPizza()
 	{
 		return this.pizza.length;
 	}
