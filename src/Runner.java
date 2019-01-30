@@ -11,6 +11,7 @@ public class Runner {
 
 
 		ReadInput reader= new ReadInput();
+		//select file
 		Input file1 = reader.readFile(new File("in/a_example.in"));
 		
 		PizzaCutter pc = new PizzaCutter();
