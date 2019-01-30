@@ -42,16 +42,16 @@ public class Runner1 {
 					
 				}
 				grid = new String [rows+1][cols];
-				System.out.println(rows+" "+cols+" "+minNumingredient+" "+maxNumCells);
+				//System.out.println(rows+" "+cols+" "+minNumingredient+" "+maxNumCells);
 			} else
 			{
 				String[] letters =str.split("");
 				for (int i = 0; i < 4; i++) {
 					grid[lineCnt-2][i]=letters[i];
-					System.out.print(grid[lineCnt-2][i]);
+					//System.out.print(grid[lineCnt-2][i]);
 					
 				}
-				System.out.println();
+				//System.out.println();
 			}
 			
 		}
@@ -63,11 +63,11 @@ public class Runner1 {
 		  for (int j = 0; j < cols-1; j++) { 
 			  tempStr.add(grid[i][0]);
 		}
-		  System.out.println();
+		  //System.out.println();
 	}
 		//print for test content of arrayList
 		for (int i = 0; i < tempStr.size(); i++) {
-			System.out.print(tempStr.get(i));
+			//System.out.print(tempStr.get(i));
 		}
 	}
 

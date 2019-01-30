@@ -50,5 +50,13 @@ public class Input {
 		    System.out.println();
 		}
 	}
+	public int getWidthOfPizza()
+	{
+		return this.pizza.length;
+	}
+	public int getLengthofPizza()
+	{
+		return this.pizza[0].length;
+	}
 
 }
