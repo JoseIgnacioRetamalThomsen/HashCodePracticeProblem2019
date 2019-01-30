@@ -28,7 +28,7 @@ public class ReadInput {
 
 			for (int i = 0; i < rows; i++) {
 				String s = sc.nextLine();
-				System.out.println(s);
+				//System.out.println(s);
 				char[] line = s.toCharArray();
 				for (int j = 0; j < col; j++) {
 					if (line[j] == 'T')

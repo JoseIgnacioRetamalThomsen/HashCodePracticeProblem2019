@@ -17,7 +17,6 @@ public class Runner {
 		PizzaCutter pc = new PizzaCutter();
 		//COMMENT
 		List<Slice> l1 = pc.cut1(file1);
-		
 
 	}
 
