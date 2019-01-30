@@ -39,6 +39,16 @@ public class Input {
 	public void setPizza(int[][] pizza) {
 		this.pizza = pizza;
 	}
+	public void printPizza()
+	{
+		for(int i = 0; i<this.pizza.length; i++)
+		{
+		    for(int j = 0; j<this.pizza[0].length; j++)
+		    {
+		        System.out.print(this.pizza[i][j]);
+		    }
+		    System.out.println();
+		}
+	}
 
-	
 }

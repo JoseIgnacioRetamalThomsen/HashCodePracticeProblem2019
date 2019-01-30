@@ -13,7 +13,7 @@ public class Runner {
 		ReadInput reader= new ReadInput();
 		//select file
 		Input file1 = reader.readFile(new File("in/a_example.in"));
-		
+		file1.printPizza();
 		PizzaCutter pc = new PizzaCutter();
 		List<Slice> l1 = pc.cut1(file1);
 		
