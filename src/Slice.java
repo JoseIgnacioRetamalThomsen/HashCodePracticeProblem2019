@@ -14,4 +14,7 @@ public class Slice {
 		// TODO Auto-generated constructor stub
 	}
 
+	public String toString() {
+	    return String.format("[(%d,%d),(%d,%d)]", x1,y1,x2,y2);
+	}
 }

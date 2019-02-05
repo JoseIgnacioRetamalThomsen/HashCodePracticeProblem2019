@@ -12,11 +12,15 @@ public class Runner {
 
 		ReadInput reader= new ReadInput();
 		//select file
-		Input file1 = reader.readFile(new File("in/a_example.in"));
+		//Input file1 = reader.readFile(new File("in/a_example.in"));
+		
+		Input file1 = reader.readFile(new File("in/b_small.in"));
+		//Input file1 = reader.readFile(new File("in/c_medium.in"));
 		file1.printPizza();
 		PizzaCutter pc = new PizzaCutter();
 		//COMMENT
 		List<Slice> l1 = pc.cut1(file1);
+		pc.cut2(file1);
 
 	}
 
