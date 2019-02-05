@@ -5,23 +5,28 @@ public class Runner {
 
 	public Runner() {
 		// TODO Auto-generated constructor stub
+		//pizza
 	}
 
 	public static void main(String[] args) {
 
 
 		ReadInput reader= new ReadInput();
-		//select file
-		//Input file1 = reader.readFile(new File("in/a_example.in"));
-		
-		Input file1 = reader.readFile(new File("in/b_small.in"));
-		//Input file1 = reader.readFile(new File("in/c_medium.in"));
+		Input file1 = reader.readFile(new File("in/a_example.in"));
+<<<<<<< HEAD
+
+		PizzaCutter pc = new PizzaCutter();
+		List<Slice> l1 = pc.cut1(file1);
+
+
+=======
 		file1.printPizza();
 		PizzaCutter pc = new PizzaCutter();
 		//COMMENT
 		List<Slice> l1 = pc.cut1(file1);
 		pc.cut2(file1);
 
+>>>>>>> 75ce074499e7efd294be45548bc68f1dbb88acd8
 	}
 
 }
