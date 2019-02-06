@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,6 +109,7 @@ public class PizzaCutter
 
         }
 
+        
         printBolMap(pizzaMap);
 
         int min = input.minIngredients;
@@ -183,14 +185,42 @@ public class PizzaCutter
 
                 System.out.println("bot " +mergeBot);
                 
-                // mark map
-                this.markMap(pizzaMap, mergeBot, actual, pairs, usedPairsMap);
+                //decide wich pair to use
+                int mergeRightCuts = this.getCuts(mergeRight);
+                int mergeBotCuts = this.getCuts(mergeBot);
+                int ingredientsRight = this.getIngCount(mergeRight, input);
+                int ingredientsBot = this.getIngCount(mergeBot, input);
+                
+                System.out.println("r c " + mergeRightCuts);
+                System.out.println("b c " + mergeBotCuts);
+                System.out.println("r i " + ingredientsRight);
+                System.out.println("b i " + ingredientsBot);
+                
+                Slice finalS = null;
+                if(ingredientsRight>=min&&ingredientsBot>=min&&mergeRightCuts<=max&&mergeBotCuts<=max) {
+                	if(ingredientsBot<ingredientsRight){
+                		finalS= mergeBot;
+                	}else
+                	{
+                		finalS = mergeRight;
+                	}
+                }else if(ingredientsRight>=min&&mergeRightCuts<=max) {
+                	finalS = mergeRight;
+                }else if(ingredientsBot>=min&&mergeBotCuts<=max) {
+                	finalS= mergeBot;
+                }
+                
+                if(finalS!=null) {
+                	this.markMap(pizzaMap, finalS, actual, pairs, usedPairsMap);
+                }
+                
+               
                 printBolMap(pizzaMap);
                 for (Boolean bol : usedPairsMap.values())
                 {
                     // System.out.println(bol);
                 }
-                break;
+                continue;
             }
         }
         System.out.println();
@@ -281,13 +311,14 @@ public class PizzaCutter
         return ((slice.x2 - slice.x1) + 1) * ((slice.y2 - slice.y1) + 1);
     }
 
-    private int getIngCount(Slice slice, Input input)
+    public int getIngCount(Slice slice, Input input)
     {
         int count0 = 0, count1 = 0;
         for (int col = slice.x1; col <= slice.x2; col++)
         {
             for (int row = slice.y1; row <= slice.y2; row++)
             {
+            	System.out.print(input.getPizza()[col][row]);
                 if (input.getPizza()[col][row] == 0)
                 {
                     count0++;
@@ -295,13 +326,19 @@ public class PizzaCutter
                 } else
                 {
                     count1++;
+                   // System.out.println(input.getPizza()[col][row]);
                 }
+                
 
             }
+            System.out.println();
         }
+        System.out.println("c0"+count0);
+        System.out.println("c1"+count1);
         if (count0 > count1)
             return count1;
         return count0;
 
     }
+ 
 }
