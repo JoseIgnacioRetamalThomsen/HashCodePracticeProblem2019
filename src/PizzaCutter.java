@@ -109,16 +109,30 @@ public class PizzaCutter
 
         }
 
-        
-        printBolMap(pizzaMap);
+        // printBolMap(pizzaMap);
 
+        System.out.println("pairs done " + pairs.size());
         int min = input.minIngredients;
         int max = input.getMaxSize();
         List<Slice> smallest = new ArrayList<Slice>();
         List<Slice> minCan = null;
+        HashMap<Integer, Boolean> usedPairsMap = null;
         if (min == 1)
         {
             smallest = pairs;
+            // sry efficiency
+            for (int col = 0; col < pizzaMap.length; col++)
+            {
+                for (int row = 0; row < pizzaMap[0].length; row++)
+                {
+                    int t = pizzaMap[col][row];
+                    if (t > 0)
+                    {
+                        pizzaMap[col][row] = -t;
+                    }
+                }
+
+            }
         } else
         {
 
@@ -126,7 +140,7 @@ public class PizzaCutter
             // right merge
 
             Slice rm = null;
-            HashMap<Integer, Boolean> usedPairsMap = new HashMap<>();
+            usedPairsMap = new HashMap<>();
             int i01 = 2;
             for (Slice s : pairs)
             {
@@ -137,17 +151,20 @@ public class PizzaCutter
             for (Integer in : usedPairsMap.keySet())
             {
                 actual = in;
-                System.out.println("loop " + actual);
+                // System.out.println("loop " + actual);
                 if (usedPairsMap.get(actual))
                     continue;
                 Slice mergeRight = pairs.get(actual - 2);
 
                 usedPairsMap.put(actual, true);
 
+                int limit = mergeRight.y1 + max;
+                if(limit>= input.getLengthofPizza()) limit = input.getLengthofPizza();
                 // look for next pair to merge
-                for (int col = mergeRight.y1; col < input.getLengthofPizza(); col++)
+              
+                for (int col = mergeRight.y1; col < limit; col++)
                 {
-                    System.out.println(pizzaMap[mergeRight.x1][col]);
+                    // System.out.println(pizzaMap[mergeRight.x1][col]);
                     // pair found
                     if (pizzaMap[mergeRight.x1][col] > actual)
                     {
@@ -155,7 +172,9 @@ public class PizzaCutter
                         // System.out.println(pairs.get(pizzaMap[first.x1][row] - 2));
 
                         mergeRight = this.addSlices(mergeRight, pairs.get(pizzaMap[mergeRight.x1][col] - 2));
-                        System.out.println("total : "+this.getIngCount(mergeRight, input)+" "+min);
+                  
+                       //usedPairsMap.put(pizzaMap[mergeRight.x1][col] - 2, true);
+                        // System.out.println("total : "+this.getIngCount(mergeRight, input)+" "+min);
                         if (this.getIngCount(mergeRight, input) >= min)
                         {
                             break;
@@ -163,19 +182,24 @@ public class PizzaCutter
                         }
                     }
                 }
-                System.out.println("right " +mergeRight);
+                // System.out.println("right " +mergeRight);
 
                 // merge bot
                 Slice mergeBot = pairs.get(actual - 2);
-
-                for (int row = mergeRight.x1; row < input.getHeightOfPizza(); row++)
+             
+                int limit1 = mergeRight.x1 + max;
+                if(limit1>= input.getHeightOfPizza()) limit1 = input.getHeightOfPizza();
+                
+                for (int col = mergeBot.x1; col <limit1; col++)
                 {
-                    System.out.println("row" + pizzaMap[row][mergeBot.y1]);
+                    // System.out.println("row" + pizzaMap[col][mergeBot.y1]);
                     // pair found
-                    if (pizzaMap[row][mergeBot.y1] > actual)
+                    if (pizzaMap[col][mergeBot.y1] > actual)
                     {
-                        mergeBot = addSlices(mergeBot, pairs.get(pizzaMap[row][mergeBot.y1]-2));
-                        if (this.getIngCount(mergeRight, input) >= min)
+                        mergeBot = addSlices(mergeBot, pairs.get(pizzaMap[col][mergeBot.y1] - 2));
+                    
+                      //  usedPairsMap.put(pizzaMap[col][mergeBot.y1] - 2, true);
+                        if (this.getIngCount(mergeBot, input) >= min)
                         {
                             break;
 
@@ -183,49 +207,153 @@ public class PizzaCutter
                     }
                 }
 
-                System.out.println("bot " +mergeBot);
-                
-                //decide wich pair to use
+                // System.out.println("bot " +mergeBot);
+
+                // decide wich pair to use
                 int mergeRightCuts = this.getCuts(mergeRight);
                 int mergeBotCuts = this.getCuts(mergeBot);
                 int ingredientsRight = this.getIngCount(mergeRight, input);
                 int ingredientsBot = this.getIngCount(mergeBot, input);
-                
-                System.out.println("r c " + mergeRightCuts);
-                System.out.println("b c " + mergeBotCuts);
-                System.out.println("r i " + ingredientsRight);
-                System.out.println("b i " + ingredientsBot);
-                
+
+                // System.out.println("r c " + mergeRightCuts);
+                // System.out.println("b c " + mergeBotCuts);
+                // System.out.println("r i " + ingredientsRight);
+                // System.out.println("b i " + ingredientsBot);
+
                 Slice finalS = null;
-                if(ingredientsRight>=min&&ingredientsBot>=min&&mergeRightCuts<=max&&mergeBotCuts<=max) {
-                	if(ingredientsBot<ingredientsRight){
-                		finalS= mergeBot;
-                	}else
-                	{
-                		finalS = mergeRight;
-                	}
-                }else if(ingredientsRight>=min&&mergeRightCuts<=max) {
-                	finalS = mergeRight;
-                }else if(ingredientsBot>=min&&mergeBotCuts<=max) {
-                	finalS= mergeBot;
-                }
-                
-                if(finalS!=null) {
-                	this.markMap(pizzaMap, finalS, actual, pairs, usedPairsMap);
-                }
-                
-               
-                printBolMap(pizzaMap);
-                for (Boolean bol : usedPairsMap.values())
+             
+                if (ingredientsRight >= min && ingredientsBot >= min && mergeRightCuts <= max && mergeBotCuts <= max)
                 {
-                    // System.out.println(bol);
+                    if (ingredientsBot < ingredientsRight)
+                    {
+                        finalS = mergeBot;
+                    
+                    } else
+                    {
+                        finalS = mergeRight;
+                        
+                      
+                    }
+                } else if (ingredientsRight >= min && mergeRightCuts <= max)
+                {
+                    finalS = mergeRight;
+              
+                } else if (ingredientsBot >= min && mergeBotCuts <= max)
+                {
+                    finalS = mergeBot;
+              
                 }
+
+                if (finalS != null)
+                {
+                    smallest.add(finalS);
+                    this.markMap(pizzaMap, finalS, actual, pairs, usedPairsMap);
+                   
+                }
+
+              
                 continue;
             }
+            System.out.println("finish");
         }
-        System.out.println();
-        printBolMap(pizzaMap);
+       
+        // System.out.println("size: " + smallest.size());
+        //printBolMap(pizzaMap);
+/*
+        // grow
+        for (Slice s : smallest)
+        {
+           // System.out.println(s);
+            if (this.getCuts(s) >= max)
+                continue;
 
+            // left
+            int top = s.x1;
+            int bot = s.x2;
+            int topCol = s.y1;
+
+            int num = pizzaMap[s.x1][s.y1];
+          //  System.out.println(num);
+          //  System.out.println(top + " " + bot);
+            if (topCol > 0)
+            {
+                boolean can = true;
+                for (int i = top; i <= bot; i++)
+                {
+                    if (pizzaMap[i][topCol - 1] < 0)
+                    {
+                        can = false;
+                        break;
+                    }
+                }
+            //    System.out.println("can? " + can);
+                if (can)
+                {
+                    Slice toAdd = new Slice(top, topCol - 1, bot, topCol - 1);
+                //    System.out.println("to add" + toAdd);
+                    Slice addSlice = this.addSlices(toAdd, s);
+                //    System.out.println(addSlice);
+                    if (this.getCuts(addSlice) <= max)
+                    {
+                        smallest.set(smallest.indexOf(s), addSlice);
+                        s=addSlice;
+                        for (int i = top; i <= bot; i++)
+                        {
+                            pizzaMap[i][topCol - 1] = num;
+
+                        }
+                    }
+
+                }
+            }
+            // end left
+
+            // top
+
+            // end top
+
+            // bottom
+
+            int leftBot = s.y1;
+            int rightBot = s.y2;
+            int botRow = s.x2;
+            if (botRow+1 < input.getHeightOfPizza())
+            {
+                boolean can = true;
+                for (int i = leftBot; i <= rightBot; i++)
+                {
+                    if (pizzaMap[botRow + 1][i] < 0)
+                    {
+                        can = false;
+                        break;
+                    }
+                }
+              //  System.out.println("can? " + can);
+                if (can)
+                {
+                    Slice toAdd = new Slice(botRow + 1, leftBot, botRow+1, rightBot);
+               //     System.out.println("to add" + toAdd);
+                    Slice addSlice = this.addSlices(toAdd, s);
+                  //  System.out.println(addSlice);
+                    
+                    if (this.getCuts(addSlice) <= max)
+                    {
+                        smallest.set(smallest.indexOf(s), addSlice);
+                        s=addSlice;
+                        for (int i = leftBot; i <= rightBot; i++)
+                        {
+                            pizzaMap[botRow + 1][i] = num;
+
+                        }
+                    }
+                }
+            }
+
+            //break;
+        }
+*/
+        System.out.println("finish");
+      printBolMap(pizzaMap);
         return null;
     }
 
@@ -237,15 +365,15 @@ public class PizzaCutter
             for (int row = slice.y1; row <= slice.y2; row++)
             {
                 int toMark = map[col][row];
-                if (toMark != 0)
+                if (toMark > 0)
                 {
                     Slice t = pairs.get(toMark - 2);
                     usedPairsMap.put(toMark, true);
-                    System.out.println(t);
+                  //  System.out.println(t);
                     map[t.x1][t.y1] = 0;
                     map[t.x2][t.y2] = 0;
                 }
-                map[col][row] = position;
+                map[col][row] = -position;
             }
         }
     }
@@ -269,7 +397,7 @@ public class PizzaCutter
             for (int row = slice.y1; row <= slice.y2; row++)
             {
 
-                System.out.println("w dsd " + array[col][row]);
+               // System.out.println("w dsd " + array[col][row]);
                 if (array[col][row] != 0)
                 {
                     isUsedRi.put(array[col][row], true);
@@ -318,7 +446,7 @@ public class PizzaCutter
         {
             for (int row = slice.y1; row <= slice.y2; row++)
             {
-            	System.out.print(input.getPizza()[col][row]);
+                System.out.print(input.getPizza()[col][row]);
                 if (input.getPizza()[col][row] == 0)
                 {
                     count0++;
@@ -326,19 +454,18 @@ public class PizzaCutter
                 } else
                 {
                     count1++;
-                   // System.out.println(input.getPizza()[col][row]);
+                    // System.out.println(input.getPizza()[col][row]);
                 }
-                
 
             }
-            System.out.println();
+           // System.out.println();
         }
-        System.out.println("c0"+count0);
-        System.out.println("c1"+count1);
+      //  System.out.println("c0" + count0);
+       // System.out.println("c1" + count1);
         if (count0 > count1)
             return count1;
         return count0;
 
     }
- 
+
 }

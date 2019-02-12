@@ -12,7 +12,7 @@ public class Runner {
 
 
 		ReadInput reader= new ReadInput();
-		Input file1 = reader.readFile(new File("in/b_small.txt"));
+		Input file1 = reader.readFile(new File("in/c_medium.in"));
 
 
 		PizzaCutter pc = new PizzaCutter();
