@@ -8,7 +8,7 @@ public class ReadInput {
 
 	}
 
-	public Input readFile(File file) {
+	public static Input readFile(File file) {
 		Input input = new Input();
 		int rows = 0;
 		int col = 0;

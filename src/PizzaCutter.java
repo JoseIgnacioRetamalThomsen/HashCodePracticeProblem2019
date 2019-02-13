@@ -20,12 +20,12 @@ public class PizzaCutter
         // testing purposes
         int test = input.getHeightOfPizza();
         int testTwo = input.getLengthofPizza();
-        System.out.println("Pizza Height: " + test + " Pizza Length: " + testTwo);
+       // System.out.println("Pizza Height: " + test + " Pizza Length: " + testTwo);
 
         return null;
     }
 
-    public List<Slice> cut2(Input input)
+    public static List<Slice> cut2(Input input)
     {
         int pizza[][] = input.getPizza();
         int pizzaMap[][] = new int[input.getHeightOfPizza()][input.getLengthofPizza()];
@@ -111,7 +111,7 @@ public class PizzaCutter
 
         // printBolMap(pizzaMap);
 
-        System.out.println("pairs done " + pairs.size());
+       // System.out.println("pairs done " + pairs.size());
         int min = input.minIngredients;
         int max = input.getMaxSize();
         List<Slice> smallest = new ArrayList<Slice>();
@@ -171,16 +171,16 @@ public class PizzaCutter
                         // increase
                         // System.out.println(pairs.get(pizzaMap[first.x1][row] - 2));
 
-                        mergeRight = this.addSlices(mergeRight, pairs.get(pizzaMap[mergeRight.x1][col] - 2));
+                        mergeRight = addSlices(mergeRight, pairs.get(pizzaMap[mergeRight.x1][col] - 2));
                   
                        //usedPairsMap.put(pizzaMap[mergeRight.x1][col] - 2, true);
                         // System.out.println("total : "+this.getIngCount(mergeRight, input)+" "+min);
-                        if (this.getIngCount(mergeRight, input) >= min)
+                        if (getIngCount(mergeRight, input) >= min)
                         {
                             break;
 
                         }
-                    }
+                    }else if(pizzaMap[mergeRight.x1][col] < actual ) break;
                 }
                 // System.out.println("right " +mergeRight);
 
@@ -199,21 +199,21 @@ public class PizzaCutter
                         mergeBot = addSlices(mergeBot, pairs.get(pizzaMap[col][mergeBot.y1] - 2));
                     
                       //  usedPairsMap.put(pizzaMap[col][mergeBot.y1] - 2, true);
-                        if (this.getIngCount(mergeBot, input) >= min)
+                        if (getIngCount(mergeBot, input) >= min)
                         {
                             break;
 
                         }
-                    }
+                    }else if(pizzaMap[col][mergeBot.y1] < actual) break;
                 }
 
                 // System.out.println("bot " +mergeBot);
 
                 // decide wich pair to use
-                int mergeRightCuts = this.getCuts(mergeRight);
-                int mergeBotCuts = this.getCuts(mergeBot);
-                int ingredientsRight = this.getIngCount(mergeRight, input);
-                int ingredientsBot = this.getIngCount(mergeBot, input);
+                int mergeRightCuts = getCuts(mergeRight);
+                int mergeBotCuts = getCuts(mergeBot);
+                int ingredientsRight = getIngCount(mergeRight, input);
+                int ingredientsBot = getIngCount(mergeBot, input);
 
                 // System.out.println("r c " + mergeRightCuts);
                 // System.out.println("b c " + mergeBotCuts);
@@ -247,7 +247,7 @@ public class PizzaCutter
                 if (finalS != null)
                 {
                     smallest.add(finalS);
-                    this.markMap(pizzaMap, finalS, actual, pairs, usedPairsMap);
+                    markMap(pizzaMap, finalS, actual, pairs, usedPairsMap);
                    
                 }
 
@@ -353,11 +353,12 @@ public class PizzaCutter
         }
 */
         System.out.println("finish");
-      printBolMap(pizzaMap);
-        return null;
+      //printBolMap(pizzaMap);
+    
+        return smallest;
     }
 
-    private void markMap(int[][] map, Slice slice, int position, List<Slice> pairs,
+    private static  void markMap(int[][] map, Slice slice, int position, List<Slice> pairs,
             HashMap<Integer, Boolean> usedPairsMap)
     {
         for (int col = slice.x1; col <= slice.x2; col++)
@@ -378,7 +379,7 @@ public class PizzaCutter
         }
     }
 
-    private void markMap(int[][] map, Slice slice, int position)
+    private static void markMap(int[][] map, Slice slice, int position)
     {
         for (int col = slice.x1; col <= slice.x2; col++)
         {
@@ -390,7 +391,7 @@ public class PizzaCutter
         }
     }
 
-    private void putUsed(Slice slice, int[][] array, HashMap<Integer, Boolean> isUsedRi)
+    private static void putUsed(Slice slice, int[][] array, HashMap<Integer, Boolean> isUsedRi)
     {
         for (int col = slice.x1; col <= slice.x2; col++)
         {
@@ -406,13 +407,13 @@ public class PizzaCutter
         }
     }
 
-    private void printBolMap(int[][] map)
+    private static void printBolMap(int[][] map)
     {
         for (int col = 0; col < map.length; col++)
         {
             for (int row = 0; row < map[0].length; row++)
             {
-                System.out.printf("%5s ", map[col][row]);
+                System.out.printf("%10s ", map[col][row]);
             }
             System.out.println();
 
@@ -420,7 +421,7 @@ public class PizzaCutter
 
     }
 
-    private Slice addSlices(Slice s1, Slice s2)
+    private static Slice addSlices(Slice s1, Slice s2)
     {
         int x1, y1, x2, y2;
         x1 = y1 = x2 = y2 = 0;
@@ -434,19 +435,19 @@ public class PizzaCutter
 
     }
 
-    private int getCuts(Slice slice)
+    private static int getCuts(Slice slice)
     {
         return ((slice.x2 - slice.x1) + 1) * ((slice.y2 - slice.y1) + 1);
     }
 
-    public int getIngCount(Slice slice, Input input)
+    public static int getIngCount(Slice slice, Input input)
     {
         int count0 = 0, count1 = 0;
         for (int col = slice.x1; col <= slice.x2; col++)
         {
             for (int row = slice.y1; row <= slice.y2; row++)
             {
-                System.out.print(input.getPizza()[col][row]);
+               // System.out.print(input.getPizza()[col][row]);
                 if (input.getPizza()[col][row] == 0)
                 {
                     count0++;

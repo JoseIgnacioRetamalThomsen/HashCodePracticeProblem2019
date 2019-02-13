@@ -1,4 +1,7 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Runner {
@@ -8,21 +11,25 @@ public class Runner {
 		//pizza
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 
 
 		ReadInput reader= new ReadInput();
-		Input file1 = reader.readFile(new File("in/c_medium.in"));
-
-
-		PizzaCutter pc = new PizzaCutter();
-		List<Slice> l1 = pc.cut1(file1);
-
-
-		file1.printPizza();
+		File files[] = new File("in").listFiles();
+		ArrayList<List<Slice>> results = new ArrayList<>();
+		
+		int cd =0;
+		for(File f : files) {
+		
+		    
+		    Printer.printCutToFile(PizzaCutter.cut2(ReadInput.readFile(f)),"out/"+ cd++ + ".out");;
+		  
+		}
+	
 		
 		
-		pc.cut2(file1);
+		
+
 
 
 	}
